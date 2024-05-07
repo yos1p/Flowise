@@ -244,6 +244,12 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
         return ['langchain', 'agents', 'executor']
     }
 
+    nodeId?: string
+
+    nodeFunction?: string
+
+    nextAgent?: AgentExecutor
+
     agent: BaseSingleActionAgent | BaseMultiActionAgent
 
     tools: this['agent']['ToolType'][]
@@ -314,13 +320,24 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
     }
 
     static fromAgentAndTools(
-        fields: AgentExecutorInput & { sessionId?: string; chatId?: string; input?: string; isXML?: boolean }
+        fields: AgentExecutorInput & {
+            sessionId?: string
+            chatId?: string
+            input?: string
+            isXML?: boolean
+            nodeId?: string
+            nodeFunction?: string
+            nextAgent?: AgentExecutor
+        }
     ): AgentExecutor {
         const newInstance = new AgentExecutor(fields)
         if (fields.sessionId) newInstance.sessionId = fields.sessionId
         if (fields.chatId) newInstance.chatId = fields.chatId
         if (fields.input) newInstance.input = fields.input
         if (fields.isXML) newInstance.isXML = fields.isXML
+        if (fields.nodeId) newInstance.nodeId = fields.nodeId
+        if (fields.nodeFunction) newInstance.nodeFunction = fields.nodeFunction
+        if (fields.nextAgent) newInstance.nextAgent = fields.nextAgent
         return newInstance
     }
 

@@ -128,6 +128,7 @@ export interface INodeData extends INodeProperties {
     credential?: string
     instance?: any
     loadMethod?: string // method to load async options
+    agents?: Array<AgentExecutor>
 }
 
 export interface INodeCredential {
@@ -146,6 +147,12 @@ export interface IUsedTool {
     tool: string
     toolInput: object
     toolOutput: string | object
+}
+
+export interface IUsedAgent {
+    agent: string
+    agentInput: object
+    agentOutput: string | object
 }
 
 export interface IFileUpload {
@@ -235,6 +242,7 @@ export class VectorStoreRetriever {
  */
 import { BaseMessage } from '@langchain/core/messages'
 import { BufferMemory, BufferWindowMemory, ConversationSummaryMemory, ConversationSummaryBufferMemory } from 'langchain/memory'
+import { AgentExecutor } from './agents'
 
 export interface MemoryMethods {
     getChatMessages(overrideSessionId?: string, returnBaseMessages?: boolean): Promise<IMessage[] | BaseMessage[]>

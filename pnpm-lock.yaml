@@ -142,6 +142,9 @@ importers:
       '@langchain/groq':
         specifier: ^0.0.8
         version: 0.0.8(encoding@0.1.13)
+      '@langchain/langgraph':
+        specifier: ^0.0.12
+        version: 0.0.12
       '@langchain/mistralai':
         specifier: ^0.0.19
         version: 0.0.19(encoding@0.1.13)
@@ -3146,6 +3149,10 @@ packages:
 
   '@langchain/groq@0.0.8':
     resolution: {integrity: sha512-xqbe35K+12fiYtC/uqkaTT4AXxqL5uvhCrHzc+nBoFkTwM6YfTFE1ch95RZ5G2JnK1U9pKAre/trUSzlU1/6Kg==}
+    engines: {node: '>=18'}
+
+  '@langchain/langgraph@0.0.12':
+    resolution: {integrity: sha512-f1N5eV3w7Y59P3rSjgNmjYoqghAPuxRUQTKX922OOhwYT0vmPVlmi99aduRHXK1oJDA3tVQCqrUkDV6D154Pnw==}
     engines: {node: '>=18'}
 
   '@langchain/mistralai@0.0.19':
@@ -15407,7 +15414,6 @@ packages:
 
   workbox-google-analytics@7.0.0:
     resolution: {integrity: sha512-MEYM1JTn/qiC3DbpvP2BVhyIH+dV/5BjHk756u9VbwuAhu0QHyKscTnisQuz21lfRpOwiS9z4XdqeVAKol0bzg==}
-    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
 
   workbox-navigation-preload@6.6.0:
     resolution: {integrity: sha512-utNEWG+uOfXdaZmvhshrh7KzhDu/1iMHyQOV6Aqup8Mm78D286ugu5k9MFD9SzBT5TcwgwSORVvInaXWbvKz9Q==}
@@ -18639,6 +18645,10 @@ snapshots:
       zod-to-json-schema: 3.22.5(zod@3.22.4)
     transitivePeerDependencies:
       - encoding
+
+  '@langchain/langgraph@0.0.12':
+    dependencies:
+      '@langchain/core': 0.1.57
 
   '@langchain/mistralai@0.0.19(encoding@0.1.13)':
     dependencies:
