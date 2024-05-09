@@ -69,7 +69,8 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
                 // \n${supervisorMessage}`
                 const inputMsg = state[0].input
                 return agent?.invoke({
-                    input: inputMsg
+                    input: inputMsg,
+                    sessionId: this.sessionId
                 })
             })
         } catch (e) {
@@ -89,7 +90,8 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
                         inputMsg = state[0].input
                     }
                     return nextAgent?.invoke({
-                        input: inputMsg
+                        input: inputMsg,
+                        sessionId: this.sessionId
                     })
                 })
             } catch (e) {

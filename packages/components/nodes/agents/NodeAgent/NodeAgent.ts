@@ -110,9 +110,7 @@ class NodeAgent_Agents implements INode {
     }
 
     async run(nodeData: INodeData, input: string, options: ICommonObject): Promise<string | ICommonObject> {
-        const memory = nodeData.inputs?.memory as FlowiseMemory
         const moderations = nodeData.inputs?.inputModeration as Moderation[]
-
         const isStreamable = options.socketIO && options.socketIOClientId
 
         if (moderations && moderations.length > 0) {
@@ -168,22 +166,7 @@ class NodeAgent_Agents implements INode {
             }
         }
 
-        await memory.addChatMessages(
-            [
-                {
-                    text: input,
-                    type: 'userMessage'
-                },
-                {
-                    text: output,
-                    type: 'apiMessage'
-                }
-            ],
-            this.sessionId
-        )
-
         let finalRes = output
-
         if (sourceDocuments.length || usedTools.length) {
             const finalRes: ICommonObject = { text: output }
             if (sourceDocuments.length) {
@@ -263,7 +246,8 @@ const prepareAgent = async (
             [inputKey]: (i: { input: string; steps: ToolsAgentStep[] }) => i.input,
             agent_scratchpad: (i: { input: string; steps: ToolsAgentStep[] }) => formatToOpenAIToolMessages(i.steps),
             [memoryKey]: async (_: { input: string; steps: ToolsAgentStep[] }) => {
-                const messages = (await memory.getChatMessages(flowObj?.sessionId, true)) as BaseMessage[]
+                const sessionId = flowObj?.sessionId
+                const messages = (await memory.getChatMessages(sessionId, true)) as BaseMessage[]
                 return messages ?? []
             }
         },

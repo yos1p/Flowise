@@ -69,6 +69,7 @@ class GraphAgent_Agents implements INode {
     }
 
     async run(nodeData: INodeData, input: string, options: ICommonObject): Promise<string | ICommonObject> {
+        const memory = nodeData.inputs?.memory as FlowiseMemory
         const isStreamable = options.socketIO && options.socketIOClientId
         const executor = await prepareGraph(nodeData, options, {
             sessionId: this.sessionId,
@@ -99,6 +100,20 @@ class GraphAgent_Agents implements INode {
 
         let output = res?.output as string
         let finalRes = output
+
+        await memory.addChatMessages(
+            [
+                {
+                    text: input,
+                    type: 'userMessage'
+                },
+                {
+                    text: output,
+                    type: 'apiMessage'
+                }
+            ],
+            this.sessionId
+        )
 
         if (sourceDocuments.length || usedAgents.length) {
             const finalRes: ICommonObject = { text: output }
