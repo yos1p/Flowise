@@ -35,7 +35,11 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
         const graph = new MessageGraph()
         this.supervisor = input.supervisor
         graph.addNode('supervisor', async (state: ChainValues[]) => {
-            return this.supervisor.invoke(state[0])
+            const inputMsg = state[0].input
+            return this.supervisor.invoke({
+                input: inputMsg,
+                sessionId: this.sessionId
+            })
         })
         this.agents.forEach((agent) => {
             this.addNextAgent(graph, agent, agent.nextAgent)
@@ -70,9 +74,10 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
                 // \n\nAdditional instruction from previous AI Assistant:
                 // \n${supervisorMessage}`
                 const inputMsg = state[0].input
+                const sessionId = this.sessionId
                 return agent?.invoke({
                     input: inputMsg,
-                    sessionId: this.sessionId
+                    sessionId: sessionId
                 })
             })
         } catch (e) {
