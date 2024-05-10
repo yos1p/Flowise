@@ -16,6 +16,8 @@ type GraphAgentOutput = ChainValues
 export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput> {
     agents: Array<AgentExecutor> = []
 
+    supervisor: AgentExecutor
+
     graph: any
 
     sessionId?: string
@@ -31,9 +33,9 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
         this.chatId = input.chatId
 
         const graph = new MessageGraph()
-        const supervisor = input.supervisor
+        this.supervisor = input.supervisor
         graph.addNode('supervisor', async (state: ChainValues[]) => {
-            return supervisor.invoke(state[0])
+            return this.supervisor.invoke(state[0])
         })
         this.agents.forEach((agent) => {
             this.addNextAgent(graph, agent, agent.nextAgent)
@@ -139,10 +141,10 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
     }
 
     get inputKeys() {
-        return []
+        return this.supervisor.agent.inputKeys
     }
 
     get outputKeys() {
-        return []
+        return this.supervisor.agent.returnValues
     }
 }
