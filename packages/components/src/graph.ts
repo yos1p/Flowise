@@ -5,6 +5,7 @@ import { CallbackManagerForChainRun } from '@langchain/core/callbacks/manager'
 import { RunnableConfig } from '@langchain/core/runnables'
 import { StringMomentoTokenProvider } from '@gomomento/sdk'
 import { ChainValues } from 'langchain/schema'
+import { Pregel } from '@langchain/langgraph/dist/pregel'
 
 interface GraphAgentInput extends ChainInputs {
     supervisor: AgentExecutor
@@ -18,7 +19,7 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
 
     supervisor: AgentExecutor
 
-    graph: any
+    graph: Pregel
 
     sessionId?: string
 
@@ -66,14 +67,14 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
 
         try {
             graph.addNode(agent.nodeId, async (state: ChainValues[]) => {
-                // let supervisorMessage = state[1].output
-                // if (supervisorMessage.includes('Agent=' + agent.nodeId))
-                //     supervisorMessage = supervisorMessage.replace('Agent=' + agent.nodeId + ';', '')
+                let supervisorMessage = state[1].output
+                if (supervisorMessage.includes('Agent=' + agent.nodeId))
+                    supervisorMessage = supervisorMessage.replace('Agent=' + agent.nodeId + ';', '')
 
-                // const inputMsg = `User's message: ${state[0].input}
-                // \n\nAdditional instruction from previous AI Assistant:
-                // \n${supervisorMessage}`
-                const inputMsg = state[0].input
+                const inputMsg = `User's message: ${state[0].input}
+                \n\nAdditional instruction from previous AI Assistant:
+                \n${supervisorMessage}`
+                // const inputMsg = state[0].input
                 const sessionId = this.sessionId
                 return agent?.invoke({
                     input: inputMsg,

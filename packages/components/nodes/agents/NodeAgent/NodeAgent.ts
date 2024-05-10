@@ -245,8 +245,8 @@ const prepareAgent = async (
         {
             [inputKey]: (i: { input: string; steps: ToolsAgentStep[] }) => i.input,
             agent_scratchpad: (i: { input: string; steps: ToolsAgentStep[] }) => formatToOpenAIToolMessages(i.steps),
-            [memoryKey]: async (_: { input: string; steps: ToolsAgentStep[] }) => {
-                const sessionId = flowObj?.sessionId
+            [memoryKey]: async (param: { input: string; sessionId?: string; steps: ToolsAgentStep[] }) => {
+                const sessionId = param.sessionId
                 const messages = (await memory.getChatMessages(sessionId, true)) as BaseMessage[]
                 return messages ?? []
             }
