@@ -72,8 +72,9 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
                     supervisorMessage = supervisorMessage.replace('Agent=' + agent.nodeId + ';', '')
 
                 const inputMsg = `User's message: ${state[0].input}
-                \n\nAdditional instruction from previous AI Assistant:
-                \n${supervisorMessage}`
+                \n\n[INST]
+                \n${supervisorMessage}
+                \n[/INST]`
                 // const inputMsg = state[0].input
                 const sessionId = this.sessionId
                 return agent?.invoke({

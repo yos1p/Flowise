@@ -150,8 +150,8 @@ const prepareSupervisor = async (
         supervisorMessage += `\n- ${agent.nodeId}. ${agent.nodeFunction}`
     })
     supervisorMessage += `\n\nIf you find an agent that can help, start the message with: "Agent=AGENT_NAME;". 
-                        You can give further details to the agent based on the User's message. 
-                        \n\nIf no agent is available, simply reply and ask for further details.`
+                        You can give short and clear instruction to the agent based on the user's message. 
+                        \n\nIf no agent is available, simply reply and ask for more information from user.`
 
     const prompt = ChatPromptTemplate.fromMessages([
         ['system', supervisorMessage],
