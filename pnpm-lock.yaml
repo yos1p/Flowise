@@ -585,9 +585,9 @@ importers:
       '@mui/x-data-grid':
         specifier: 6.8.0
         version: 6.8.0(@mui/material@5.15.0(@emotion/react@11.11.4(@types/react@18.2.65)(react@18.2.0))(@emotion/styled@11.11.0(@emotion/react@11.11.4(@types/react@18.2.65)(react@18.2.0))(@types/react@18.2.65)(react@18.2.0))(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@mui/system@5.15.12(@emotion/react@11.11.4(@types/react@18.2.65)(react@18.2.0))(@emotion/styled@11.11.0(@emotion/react@11.11.4(@types/react@18.2.65)(react@18.2.0))(@types/react@18.2.65)(react@18.2.0))(@types/react@18.2.65)(react@18.2.0))(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@tabler/icons':
-        specifier: ^1.39.1
-        version: 1.119.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@tabler/icons-react':
+        specifier: ^3.3.0
+        version: 3.4.0(react@18.2.0)
       '@uiw/codemirror-theme-sublime':
         specifier: ^4.21.21
         version: 4.21.24(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.25.1)
@@ -4313,16 +4313,13 @@ packages:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
 
-  '@tabler/icons@1.119.0':
-    resolution: {integrity: sha512-Fk3Qq4w2SXcTjc/n1cuL5bccPkylrOMo7cYpQIf/yw6zP76LQV9dtLcHQUjFiUnaYuswR645CnURIhlafyAh9g==}
+  '@tabler/icons-react@3.4.0':
+    resolution: {integrity: sha512-hwRXZ//7B3d8FSb2loMj67s8UZeneCsOCs+Acv0KllWXS15brpFjdi6ROf/Vq5+vr1brFf+xmSTiQkKlEF1Yaw==}
     peerDependencies:
-      react: ^16.x || 17.x || 18.x
-      react-dom: ^16.x || 17.x || 18.x
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
+      react: '>= 16'
+
+  '@tabler/icons@3.4.0':
+    resolution: {integrity: sha512-6gYHXG0xAJgt2KPcTYDqhe3xYoJMTgz/ZfYup4EUHsxzYsz6rBlt8WgavHsGaWckaqH7ApR/epYslfXZjK27yw==}
 
   '@testing-library/dom@9.3.4':
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
@@ -21098,10 +21095,12 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tabler/icons@1.119.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
-    optionalDependencies:
+  '@tabler/icons-react@3.4.0(react@18.2.0)':
+    dependencies:
+      '@tabler/icons': 3.4.0
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+
+  '@tabler/icons@3.4.0': {}
 
   '@testing-library/dom@9.3.4':
     dependencies:
