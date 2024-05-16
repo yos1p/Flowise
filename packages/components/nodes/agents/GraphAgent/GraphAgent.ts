@@ -137,7 +137,6 @@ const prepareSupervisor = async (
     const maxIterations = nodeData.inputs?.maxIterations as string
     const systemMessage = nodeData.inputs?.systemMessage as string
     const nodeId = nodeData.inputs?.nodeId as string
-    const nextAgent = nodeData.inputs?.nextAgent as AgentExecutor
     const memoryKey = memory.memoryKey ? memory.memoryKey : 'chat_history'
     const inputKey = memory.inputKey ? memory.inputKey : 'input'
     const agents = nodeData.inputs?.agents as AgentExecutor[]
@@ -150,8 +149,10 @@ const prepareSupervisor = async (
         supervisorMessage += `\n- ${agent.nodeId}. ${agent.nodeFunction}`
     })
     supervisorMessage += `\n\nIf you find an agent that can help, start the message with: "Agent=AGENT_NAME;". 
-                        You can give short and clear instruction to the agent based on the user's message. 
-                        \n\nIf no agent is available, simply reply and ask for more information from user.`
+                        Based on the chat history, you should try to get user's intention and find an agent that can help. 
+                        Give simple, clear, and step-by-step instruction to the agent on what to do, based on the user's message and intention.
+                        \n\nIf no agent is available, simply reply and ask for more information from user. 
+                        \n\nREMEMBER: Never use AGENT_NAME that is not in the list.`
 
     const prompt = ChatPromptTemplate.fromMessages([
         ['system', supervisorMessage],
@@ -182,8 +183,7 @@ const prepareSupervisor = async (
         input: flowObj?.input,
         verbose: process.env.DEBUG === 'true' ? true : false,
         maxIterations: maxIterations ? parseFloat(maxIterations) : undefined,
-        nodeId,
-        nextAgent: nextAgent
+        nodeId
     })
 
     return executor

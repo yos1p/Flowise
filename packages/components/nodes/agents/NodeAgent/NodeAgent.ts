@@ -30,7 +30,7 @@ class NodeAgent_Agents implements INode {
     constructor(fields?: { sessionId?: string }) {
         this.label = 'Node Agent'
         this.name = 'nodeAgent'
-        this.version = 1.0
+        this.version = 1.1
         this.type = 'AgentExecutor'
         this.category = 'Agents'
         this.icon = 'nodeAgent.png'
@@ -42,6 +42,7 @@ class NodeAgent_Agents implements INode {
                 label: 'Tools',
                 name: 'tools',
                 type: 'Tool',
+                optional: true,
                 list: true
             },
             {
@@ -57,24 +58,17 @@ class NodeAgent_Agents implements INode {
                     'Only compatible with models that are capable of function calling. ChatOpenAI, ChatMistral, ChatAnthropic, ChatVertexAI'
             },
             {
-                label: 'Next Agent',
-                name: 'nextAgent',
-                type: 'AgentExecutor',
-                optional: true
-            },
-            {
-                label: 'Node Id (Experimental)',
+                label: 'Node Id',
                 name: 'nodeId',
                 type: 'string',
-                optional: true,
                 additionalParams: true
             },
             {
-                label: 'Node Function (Experimental)',
+                label: 'Node Function',
                 name: 'nodeFunction',
                 type: 'string',
                 default: `Call this agent if the user needs to do something.`,
-                optional: true,
+                rows: 2,
                 additionalParams: true
             },
             {
@@ -197,7 +191,6 @@ const prepareAgent = async (
     const inputKey = memory.inputKey ? memory.inputKey : 'input'
     const nodeId = nodeData.inputs?.nodeId as string
     const nodeFunction = nodeData.inputs?.nodeFunction as string
-    const nextAgent = nodeData.inputs?.nextAgent as AgentExecutor
 
     const prompt = ChatPromptTemplate.fromMessages([
         ['system', systemMessage],
@@ -265,8 +258,7 @@ const prepareAgent = async (
         verbose: process.env.DEBUG === 'true' ? true : false,
         maxIterations: maxIterations ? parseFloat(maxIterations) : undefined,
         nodeId,
-        nodeFunction,
-        nextAgent
+        nodeFunction
     })
 
     return executor

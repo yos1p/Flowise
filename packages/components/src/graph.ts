@@ -43,7 +43,7 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
             })
         })
         this.agents.forEach((agent) => {
-            this.addNextAgent(graph, agent, agent.nextAgent)
+            this.addNextAgent(graph, agent)
         })
         // When the supervisor returns, route to the agent identified in the supervisor's output
         graph.addConditionalEdges('supervisor', (state: ChainValues[]) => {
@@ -62,8 +62,9 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
         this.graph = graph.compile()
     }
 
-    addNextAgent(graph: MessageGraph<any>, agent: AgentExecutor, nextAgent?: AgentExecutor) {
+    addNextAgent(graph: MessageGraph<any>, agent: AgentExecutor) {
         if (!agent.nodeId) throw new Error('Agent must have a nodeId')
+        if (!agent.nodeFunction) throw new Error('Agent must have a nodeFunction')
 
         try {
             graph.addNode(agent.nodeId, async (state: ChainValues[]) => {
@@ -82,42 +83,9 @@ export class GraphAgentExecutor extends BaseChain<ChainValues, GraphAgentOutput>
                     sessionId: sessionId
                 })
             })
+            graph.addEdge(agent.nodeId, END)
         } catch (e) {
             // If the node already added previously, we ignore
-        }
-
-        if (nextAgent) {
-            if (!nextAgent.nodeId) throw new Error('Agent must have a nodeId')
-
-            // It is possible the node already added previously, so if error, we ignore
-            try {
-                graph.addNode(nextAgent.nodeId, async (state: ChainValues[]) => {
-                    let inputMsg
-                    if (state.length > 1) {
-                        inputMsg = state[state.length - 1].output
-                    } else {
-                        inputMsg = state[0].input
-                    }
-                    return nextAgent?.invoke({
-                        input: inputMsg,
-                        sessionId: this.sessionId
-                    })
-                })
-            } catch (e) {
-                // If the node already added previously, we ignore
-            }
-
-            try {
-                const agentId = agent.nodeId
-                const nextAgentId = nextAgent.nodeId
-                graph.addEdge(agentId, nextAgentId)
-                this.addNextAgent(graph, nextAgent, nextAgent.nextAgent)
-            } catch (e) {
-                // It is possible the nextAgent already added previously, so if error, we ignore
-            }
-        } else {
-            // Last node always report to the supervisor
-            graph.addEdge(agent.nodeId, END)
         }
     }
 

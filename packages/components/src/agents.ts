@@ -248,8 +248,6 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
 
     nodeFunction?: string
 
-    nextAgent?: AgentExecutor
-
     agent: BaseSingleActionAgent | BaseMultiActionAgent
 
     tools: this['agent']['ToolType'][]
@@ -327,7 +325,6 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
             isXML?: boolean
             nodeId?: string
             nodeFunction?: string
-            nextAgent?: AgentExecutor
         }
     ): AgentExecutor {
         const newInstance = new AgentExecutor(fields)
@@ -337,7 +334,6 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
         if (fields.isXML) newInstance.isXML = fields.isXML
         if (fields.nodeId) newInstance.nodeId = fields.nodeId
         if (fields.nodeFunction) newInstance.nodeFunction = fields.nodeFunction
-        if (fields.nextAgent) newInstance.nextAgent = fields.nextAgent
         return newInstance
     }
 
