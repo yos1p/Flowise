@@ -225,6 +225,7 @@ export interface IDocument<Metadata extends Record<string, any> = Record<string,
 import { PromptTemplate as LangchainPromptTemplate, PromptTemplateInput } from '@langchain/core/prompts'
 import { VectorStore } from '@langchain/core/vectorstores'
 import { Document } from '@langchain/core/documents'
+import { AgentExecutor } from './agents'
 
 export class PromptTemplate extends LangchainPromptTemplate {
     promptValues: ICommonObject

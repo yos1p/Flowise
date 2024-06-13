@@ -1,5 +1,5 @@
 import { BaseMessage, ChainValues } from 'langchain/schema'
-import { FlowiseMemory, ICommonObject, INode, INodeData, INodeParams, IUsedAgent } from '../../../src'
+import { FlowiseMemory, ICommonObject, INode, INodeData, INodeParams } from '../../../src'
 import { ConsoleCallbackHandler, CustomChainHandler, additionalCallbacks } from '../../../src/handler'
 import { GraphAgentExecutor } from '../../../src/graph'
 import { BaseChatModel } from '@langchain/core/language_models/chat_models'
@@ -82,20 +82,12 @@ class GraphAgent_Agents implements INode {
 
         let res: ChainValues = {}
         let sourceDocuments: ICommonObject[] = []
-        let usedAgents: IUsedAgent[] = []
 
         if (isStreamable) {
             const handler = new CustomChainHandler(options.socketIO, options.socketIOClientId)
             res = await executor.invoke({ input }, { callbacks: [loggerHandler, handler, ...callbacks] })
-            if (res.usedAgents) {
-                options.socketIO.to(options.socketIOClientId).emit('usedAgents', res.usedAgents)
-                usedAgents = res.usedAgents
-            }
         } else {
             res = await executor.invoke({ input }, { callbacks: [loggerHandler, ...callbacks] })
-            if (res.usedAgents) {
-                usedAgents = res.usedAgents
-            }
         }
 
         let output = res?.output as string
@@ -115,11 +107,8 @@ class GraphAgent_Agents implements INode {
             this.sessionId
         )
 
-        if (sourceDocuments.length || usedAgents.length) {
+        if (sourceDocuments.length) {
             const finalRes: ICommonObject = { text: output }
-            if (usedAgents.length) {
-                finalRes.usedAgents = usedAgents
-            }
             return finalRes
         }
 
