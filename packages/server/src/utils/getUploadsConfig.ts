@@ -25,7 +25,8 @@ export const utilGetUploadsConfig = async (chatflowid: string): Promise<any> => 
         'conversationalAgent',
         'toolAgent',
         'nodeAgent',
-        'graphAgent'
+        'graphAgent',
+        'supervisor'
     ]
     const uploadProcessingNodes = ['chatOpenAI', 'chatAnthropic', 'awsChatBedrock', 'azureChatOpenAI', 'chatGoogleGenerativeAI']
 
