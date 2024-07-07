@@ -440,9 +440,10 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
                             usedTools.push({
                                 tool: tool.name,
                                 toolInput: action.toolInput as any,
-                                toolOutput: observation.includes(SOURCE_DOCUMENTS_PREFIX)
-                                    ? observation.split(SOURCE_DOCUMENTS_PREFIX)[0]
-                                    : observation
+                                toolOutput:
+                                    typeof observation === 'string' && observation.includes(SOURCE_DOCUMENTS_PREFIX)
+                                        ? observation.split(SOURCE_DOCUMENTS_PREFIX)[0]
+                                        : observation
                             })
                         } else {
                             observation = `${action.tool} is not a valid tool, try another one.`
@@ -462,7 +463,7 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
                             return { action, observation: observation ?? '' }
                         }
                     }
-                    if (observation?.includes(SOURCE_DOCUMENTS_PREFIX)) {
+                    if (typeof observation === 'string' && observation.includes(SOURCE_DOCUMENTS_PREFIX)) {
                         const observationArray = observation.split(SOURCE_DOCUMENTS_PREFIX)
                         observation = observationArray[0]
                         const docs = observationArray[1]
@@ -571,7 +572,7 @@ export class AgentExecutor extends BaseChain<ChainValues, AgentExecutorOutput> {
                             input: this.input
                         }
                     )
-                    if (observation?.includes(SOURCE_DOCUMENTS_PREFIX)) {
+                    if (typeof observation === 'string' && observation.includes(SOURCE_DOCUMENTS_PREFIX)) {
                         const observationArray = observation.split(SOURCE_DOCUMENTS_PREFIX)
                         observation = observationArray[0]
                     }
