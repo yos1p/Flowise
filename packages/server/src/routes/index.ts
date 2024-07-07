@@ -37,6 +37,7 @@ import variablesRouter from './variables'
 import vectorRouter from './vectors'
 import verifyRouter from './verify'
 import versionRouter from './versions'
+import voiceapiRouter from './voiceapi'
 import upsertHistoryRouter from './upsert-history'
 import pingRouter from './ping'
 
@@ -81,6 +82,7 @@ router.use('/variables', variablesRouter)
 router.use('/vector', vectorRouter)
 router.use('/verify', verifyRouter)
 router.use('/version', versionRouter)
+router.use('/voiceapi', voiceapiRouter)
 router.use('/upsert-history', upsertHistoryRouter)
 
 export default router
